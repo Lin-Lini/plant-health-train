@@ -1,0 +1,17 @@
+name: yolo11-defects-seg
+max_restarts: 2
+resources:
+  slots_per_trial: 2
+entrypoint: python yolo_train.py --data /data/defects_seg/data.yaml --model yolo11l-seg.pt --imgsz 1536 --epochs 220 --batch auto --workers 8 --project runs/defects --name exp --train_list /data/defects_seg/train_balanced
+searcher:
+  name: single
+  metric: dummy_metric
+  smaller_is_better: false
+  max_length:
+    records: 1
+environment:
+  image: ultralytics/ultralytics:8.3.0
+bind_mounts:
+- host_path: /mnt/datasets/defects_seg
+  container_path: /data/defects_seg
+  read_only: true

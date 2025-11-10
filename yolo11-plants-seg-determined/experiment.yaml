@@ -1,0 +1,17 @@
+name: yolo11-plants-seg
+max_restarts: 2
+resources:
+  slots_per_trial: 2
+entrypoint: python yolo_train.py --data /data/plants_seg/data.yaml --model yolo11l-seg.pt --imgsz 1280 --epochs 180 --batch auto --workers 8 --project runs/plants --name exp --train_list /data/plants_seg/train_balanced
+searcher:
+  name: single
+  metric: dummy_metric
+  smaller_is_better: false
+  max_length:
+    records: 1
+environment:
+  image: ultralytics/ultralytics:8.3.0
+bind_mounts:
+- host_path: /mnt/datasets/plants_seg
+  container_path: /data/plants_seg
+  read_only: true
